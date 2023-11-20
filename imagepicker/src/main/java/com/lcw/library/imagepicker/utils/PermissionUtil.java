@@ -20,6 +20,19 @@ public class PermissionUtil {
      * @return
      */
     public static boolean checkPermission(Context context) {
-        return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+
+        // 目标版本为Android 13，细化READ_EXTERNAL_STORAGE权限,使用READ_MEDIA_IMAGE、READ_MEDIA_VIDEO、READ_MEDIA_AUDIO替代READ_EXTERNAL_STORAGE；
+        /// added by ko 2023.11.20
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+
+            return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_IMAGE) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_VIDEO) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+        }else{
+            return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+        }
+
     }
 }

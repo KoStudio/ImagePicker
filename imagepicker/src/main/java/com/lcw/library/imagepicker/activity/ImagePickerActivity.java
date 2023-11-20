@@ -243,7 +243,23 @@ public class ImagePickerActivity extends BaseActivity implements ImagePickerAdap
         //进行权限的判断
         boolean hasPermission = PermissionUtil.checkPermission(this);
         if (!hasPermission) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION_CAMERA_CODE);
+            // 目标版本为Android 13，细化READ_EXTERNAL_STORAGE权限,使用READ_MEDIA_IMAGE、READ_MEDIA_VIDEO、READ_MEDIA_AUDIO 替代READ_EXTERNAL_STORAGE；
+            /// added by ko 2023.11.20
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+
+                ActivityCompat.requestPermissions(this, new String[]{
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.READ_MEDIA_IMAGE,
+                        Manifest.permission.READ_MEDIA_AUDIO,
+                        Manifest.permission.READ_MEDIA_VIDEO
+                }, REQUEST_PERMISSION_CAMERA_CODE);
+            }else{
+                ActivityCompat.requestPermissions(this, new String[]{
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                }, REQUEST_PERMISSION_CAMERA_CODE);
+            }
+
         } else {
             startScannerTask();
         }
