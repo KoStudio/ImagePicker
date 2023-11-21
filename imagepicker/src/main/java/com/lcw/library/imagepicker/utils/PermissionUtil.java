@@ -3,7 +3,9 @@ package com.lcw.library.imagepicker.utils;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.support.v4.content.ContextCompat;
+import android.os.Build;
+
+import androidx.core.content.ContextCompat;
 
 /**
  * Create by: chenWei.li
@@ -25,7 +27,7 @@ public class PermissionUtil {
         /// added by ko 2023.11.20
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
 
-            return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_IMAGE) == PackageManager.PERMISSION_GRANTED
+            return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED
                     && ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED
                     && ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_VIDEO) == PackageManager.PERMISSION_GRANTED
                     && ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;

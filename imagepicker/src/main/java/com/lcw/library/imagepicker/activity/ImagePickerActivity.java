@@ -10,11 +10,13 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.FileProvider;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
@@ -249,7 +251,7 @@ public class ImagePickerActivity extends BaseActivity implements ImagePickerAdap
 
                 ActivityCompat.requestPermissions(this, new String[]{
                         Manifest.permission.CAMERA,
-                        Manifest.permission.READ_MEDIA_IMAGE,
+                        Manifest.permission.READ_MEDIA_IMAGES,
                         Manifest.permission.READ_MEDIA_AUDIO,
                         Manifest.permission.READ_MEDIA_VIDEO
                 }, REQUEST_PERMISSION_CAMERA_CODE);
@@ -279,8 +281,10 @@ public class ImagePickerActivity extends BaseActivity implements ImagePickerAdap
             if (grantResults.length >= 1) {
                 int cameraResult = grantResults[0];//相机权限
                 int sdResult = grantResults[1];//sd卡权限
+
                 boolean cameraGranted = cameraResult == PackageManager.PERMISSION_GRANTED;//拍照权限
                 boolean sdGranted = sdResult == PackageManager.PERMISSION_GRANTED;//拍照权限
+
                 if (cameraGranted && sdGranted) {
                     //具有拍照权限，sd卡权限，开始扫描任务
                     startScannerTask();
@@ -582,6 +586,7 @@ public class ImagePickerActivity extends BaseActivity implements ImagePickerAdap
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CODE_CAPTURE) {
                 //通知媒体库刷新
